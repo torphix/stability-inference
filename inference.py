@@ -1,3 +1,4 @@
+import os
 import json
 import torch
 import base64
@@ -7,7 +8,7 @@ from PIL import Image
 from io import BytesIO
 from PIL import Image, ImageOps
 from diffusers import StableDiffusionInpaintPipeline
-
+import tarfile
 
 def img2img_preprocessor(org_img, mask_img):
     '''
@@ -53,10 +54,15 @@ def img2img_postprocessor(img: Image, org_shape: list):
 
 
 def model_fn(model_dir):
+    # Check if weights unpacked
+    if os.path.exists(f'/var/meadowrun/machine_cache/weights/stable-diffusion-2-inpainting') == False:
+        tar = tarfile.open('/var/meadowrun/machine_cache/stable-diffusion-2-inpainting.tar.gz', "r:gz")
+        tar.extractall(f'/var/meadowrun/machine_cache/weights/stable-diffusion-2-inpainting')
+        tar.close()
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     pipe = StableDiffusionInpaintPipeline.from_pretrained(
-        f'{model_dir}/weights/stable-diffusion-2-inpainting',
+        f'/var/meadowrun/machine_cache/weights/stable-diffusion-2-inpainting',
         torch_dtype=torch.float16,
         # cache_dir='deployment/aws/models/stable-diffusion-2-inpainting/weights',
         local_files_only=True,
