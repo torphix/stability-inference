@@ -3,5 +3,4 @@ transformers
 accelerate
 scipy
 safetensors
-meadowrun
 boto3

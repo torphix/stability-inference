@@ -105,8 +105,9 @@ def output_fn(outputs, content_type):
 def end2end_function(inputs):
     root = pathlib.Path(__file__).absolute().parent
     inputs = input_fn(inputs, None)
-
+    print('Loading Model')
     model = model_fn(root.parent)
+    print('Running Prediction')
     outputs = predict_fn(inputs, model)
     outputs = output_fn(outputs, None)
 
@@ -115,9 +116,12 @@ def end2end_function(inputs):
 
 
 
-# inputs = json.dumps(
-        # {'prompt': 'Photo realistic image of a cat, high definition',
-        # 'image': np.array(Image.open(f'{root}/sample_io/test_img.png'))[:, :, :3].tolist(),
-        # 'mask': np.array(Image.open(f'{root}/sample_io/test_mask.png'))[:, :, :3].tolist()})
+if __name__ == '__main__':
+    inputs = json.dumps(
+        {'prompt': 'Photo realistic image of a cat, high definition',
+        'image': np.array(Image.open(f'./sample_io/test_img.png'))[:, :, :3].tolist(),
+        'mask': np.array(Image.open(f'./sample_io/test_mask.png'))[:, :, :3].tolist()})
+
+    end2end_function(inputs)
 
     
