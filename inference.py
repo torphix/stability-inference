@@ -9,6 +9,7 @@ from io import BytesIO
 from PIL import Image, ImageOps
 from diffusers import StableDiffusionInpaintPipeline
 import tarfile
+from transformers import pipeline
 
 def img2img_preprocessor(org_img, mask_img):
     '''
@@ -55,7 +56,7 @@ def img2img_postprocessor(img: Image, org_shape: list):
 
 def model_fn(model_dir):
     # Check if weights unpacked
-    if os.path.exists(f'/var/meadowrun/machine_cache/weights/stable-diffusion-2-inpainting') == False:
+    if os.path.exists(f'/var/meadowrun/machine_cache/weights') == False:
         print('Extracting Files..')
         tar = tarfile.open('/var/meadowrun/machine_cache/stable-diffusion-v2-inpainting.tar.gz', "r:gz")
         tar.extractall(f'/var/meadowrun/machine_cache/')
@@ -118,11 +119,13 @@ def end2end_function(inputs):
 
 
 if __name__ == '__main__':
-    inputs = json.dumps(
-        {'prompt': 'Photo realistic image of a cat, high definition',
-        'image': np.array(Image.open(f'./sample_io/test_img.png'))[:, :, :3].tolist(),
-        'mask': np.array(Image.open(f'./sample_io/test_mask.png'))[:, :, :3].tolist()})
+    # inputs = json.dumps(
+    #     {'prompt': 'Photo realistic image of a cat, high definition',
+    #     'image': np.array(Image.open(f'./sample_io/test_img.png'))[:, :, :3].tolist(),
+    #     'mask': np.array(Image.open(f'./sample_io/test_mask.png'))[:, :, :3].tolist()})
 
-    end2end_function(inputs)
+    # end2end_function(inputs)
 
-    
+    generator = pipeline('text-generation', model='distilgpt2')
+    output = generator('hello how are you doing!', max_length=80, num_return_sequences=2)
+    print(output[0]['generated_text'])
