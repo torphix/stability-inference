@@ -56,6 +56,7 @@ def img2img_postprocessor(img: Image, org_shape: list):
 def model_fn(model_dir):
     # Check if weights unpacked
     if os.path.exists(f'/var/meadowrun/machine_cache/weights/stable-diffusion-2-inpainting') == False:
+        print('Extracting Files..')
         tar = tarfile.open('/var/meadowrun/machine_cache/stable-diffusion-v2-inpainting.tar.gz', "r:gz")
         tar.extractall(f'/var/meadowrun/machine_cache/')
         tar.close()
@@ -63,11 +64,11 @@ def model_fn(model_dir):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     pipe = StableDiffusionInpaintPipeline.from_pretrained(
         f'/var/meadowrun/machine_cache/weights/stable-diffusion-2-inpainting',
-        torch_dtype=torch.float16,
+        torch_dtype=torch.float32,
         # cache_dir='deployment/aws/models/stable-diffusion-2-inpainting/weights',
         local_files_only=True,
     )
-    pipe.enable_attention_slicing()
+    # pipe.enable_attention_slicing()
     pipe = pipe.to(device)
     return pipe
 
