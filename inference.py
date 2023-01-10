@@ -105,12 +105,17 @@ def output_fn(outputs, content_type):
 
 
 def end2end_function(inputs):
+    import time
     root = pathlib.Path(__file__).absolute().parent
     inputs = input_fn(inputs, None)
+    start = time.perf_counter()
     print('Loading Model')
     model = model_fn(root.parent)
+    print(f'Time to load model {time.perf_counter() - start}')
     print('Running Prediction')
+    start = time.perf_counter()
     outputs = predict_fn(inputs, model)
+    print(f'Time to perform inference {time.perf_counter() - start}')
     outputs = output_fn(outputs, None)
 
     image = Image.fromarray(np.array(outputs['output_image'], dtype=np.uint8))
