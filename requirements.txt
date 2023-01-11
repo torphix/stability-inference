@@ -4,3 +4,4 @@ accelerate
 scipy
 safetensors
 boto3
+awscli
