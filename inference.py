@@ -63,6 +63,7 @@ def model_fn(model_dir):
         tar.close()
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(device)
     pipe = StableDiffusionInpaintPipeline.from_pretrained(
         f'/var/meadowrun/machine_cache/weights/stable-diffusion-2-inpainting',
         torch_dtype=torch.float16,
