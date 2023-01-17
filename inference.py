@@ -119,8 +119,9 @@ def end2end_function(inputs):
     print(f'Time to perform inference {time.perf_counter() - start}')
     outputs = output_fn(outputs, None)
 
-    image = Image.fromarray(np.array(outputs['output_image'], dtype=np.uint8))
-    image.save(f'./sample_io/out.png')
+    image = np.array(outputs['output_image'], dtype=np.uint8)
+    return image
+#     image.save(f'./sample_io/out.png')
 
 
 
