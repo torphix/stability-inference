@@ -124,7 +124,7 @@ def end2end_function(inputs):
 #     image.save(f'./sample_io/out.png')
 
 def predict(input_data):
-    return end2end_function(inputs)
+    return end2end_function(input_data)
     
 
 if __name__ == '__main__':
