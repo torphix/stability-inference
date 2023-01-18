@@ -55,12 +55,6 @@ def img2img_postprocessor(img: Image, org_shape: list):
 
 
 def model_fn(model_dir):
-    # Check if weights unpacked
-    if os.path.exists(f'/var/meadowrun/machine_cache/weights') == False:
-        print('Extracting Files..')
-        tar = tarfile.open('/var/meadowrun/machine_cache/stable-diffusion-v2-inpainting.tar.gz', "r:gz")
-        tar.extractall(f'/var/meadowrun/machine_cache/')
-        tar.close()
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(device)
