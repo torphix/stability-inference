@@ -114,7 +114,7 @@ def end2end_function(inputs):
     outputs = output_fn(outputs, None)
 
     image = np.array(outputs['output_image'], dtype=np.uint8).tolist()
-    return image
+    return {'output_image':image}
 #     image.save(f'./sample_io/out.png')
 
 def predict(input_data):
