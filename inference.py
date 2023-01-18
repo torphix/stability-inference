@@ -59,7 +59,7 @@ def model_fn(model_dir):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(device)
     pipe = StableDiffusionInpaintPipeline.from_pretrained(
-        f'/var/meadowrun/machine_cache/weights/stable-diffusion-2-inpainting',
+        f'/var/meadowrun/machine_cache/model_assets/weights/stable-diffusion-2-inpainting',
         torch_dtype=torch.float16,
         # cache_dir='deployment/aws/models/stable-diffusion-2-inpainting/weights',
         local_files_only=True,
